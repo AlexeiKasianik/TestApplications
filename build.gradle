@@ -1,10 +1,102 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+
+    ext.kotlin_version = "1.7.0"
+
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.2.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:10.3.0"
+        classpath 'com.google.gms:google-services:4.3.14'
+        classpath 'com.google.firebase:perf-plugin:1.4.1'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.1'
+    }
+
+}
+
 plugins {
-    id 'com.android.application' version '7.2.1' apply false
-    id 'com.android.library' version '7.2.1' apply false
     id 'org.jetbrains.kotlin.android' version '1.7.0' apply false
+    id 'io.realm.kotlin' version '1.0.2' apply false
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+task cleanOutputDir(type: Delete) {
+    delete "app/build/outputs"
+}
+
+ext {
+    compileSdkVersion = 33
+    minSdkVersion = 24
+    targetSdkVersion = 33
+    buildToolsVersion = "33.0.0"
+
+    dependencies = [:]
+
+    dependencies.kotlinStdlib = 'org.jetbrains.kotlin:kotlin-stdlib'
+    dependencies.appcompat = 'androidx.appcompat:appcompat:1.5.1'
+    dependencies.constraintLayout = 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    dependencies.lifecycleService = 'androidx.lifecycle:lifecycle-service:2.5.1'
+
+    /* View */
+    dependencies.coreKtx = 'androidx.core:core-ktx:1.9.0'
+    dependencies.activityKtx = 'androidx.activity:activity-ktx:1.6.0-rc02'
+    dependencies.fragmentKtx = 'androidx.fragment:fragment-ktx:1.5.2'
+    dependencies.material = 'com.google.android.material:material:1.6.1'
+    dependencies.recyclerView = 'androidx.recyclerview:recyclerview:1.2.1'
+    dependencies.lifecycleCommonJava8 = 'androidx.lifecycle:lifecycle-common-java8:2.5.1'
+
+    dependencies.viewBinding = 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6'
+
+    /* Image */
+    dependencies.coil = "io.coil-kt:coil:1.4.0"
+
+    /* Navigation */
+    dependencies.cicerone = 'com.github.terrakok:cicerone:6.6'
+
+    /* DI */
+    def koinVersion = "3.2.0"
+    dependencies.koinAndroid = "io.insert-koin:koin-android:${koinVersion}"
+    dependencies.koinTest = "io.insert-koin:koin-test:${koinVersion}"
+
+    /* Logging */
+    dependencies.napier = "io.github.aakira:napier:2.6.1"
+    dependencies.httpLogging = 'com.squareup.okhttp3:logging-interceptor:4.9.1'
+
+    /* Networking */
+
+    dependencies.ktorAndroid = 'io.ktor:ktor-client-android:2.1.1'
+    dependencies.ktorClientSerialization = 'io.ktor:ktor-client-serialization:1.5.0'
+    dependencies.kotlinxSerialization =  'org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1'
+    dependencies.ktorLogging = 'io.ktor:ktor-client-logging-jvm:1.5.0'
+
+    dependencies.leakCanary = 'com.squareup.leakcanary:leakcanary-android:2.9.1'
+
+    /* Database */
+    dependencies.realm = 'io.realm.kotlin:library-base:1.0.2'
+
+    /* Coroutines */
+    dependencies.coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
+
+    dependencies.crashlytics = 'com.google.firebase:firebase-crashlytics-ktx:18.2.13'
+
+
 }
