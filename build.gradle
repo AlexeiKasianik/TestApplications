@@ -16,14 +16,15 @@ buildscript {
         classpath "org.jlleitschuh.gradle:ktlint-gradle:10.3.0"
         classpath 'com.google.gms:google-services:4.3.14'
         classpath 'com.google.firebase:perf-plugin:1.4.1'
+        classpath "io.realm:realm-gradle-plugin:10.8.0"
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.1'
+        classpath "org.jetbrains.kotlin:kotlin-serialization:${kotlin_version}"
     }
 
 }
 
 plugins {
     id 'org.jetbrains.kotlin.android' version '1.7.0' apply false
-    id 'io.realm.kotlin' version '1.0.2' apply false
 }
 
 allprojects {
@@ -50,6 +51,17 @@ ext {
 
     dependencies = [:]
 
+    dependencies.presentation = [
+            project(':presentation:logic'),
+            project(':presentation:ui'),
+    ]
+    dependencies.domain = [
+            project(':domain'),
+    ]
+    dependencies.data = [
+            project(':data'),
+    ]
+
     dependencies.kotlinStdlib = 'org.jetbrains.kotlin:kotlin-stdlib'
     dependencies.appcompat = 'androidx.appcompat:appcompat:1.5.1'
     dependencies.constraintLayout = 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -60,7 +72,7 @@ ext {
     dependencies.coreKtx = 'androidx.core:core-ktx:1.9.0'
     dependencies.activityKtx = 'androidx.activity:activity-ktx:1.6.0-rc02'
     dependencies.fragmentKtx = 'androidx.fragment:fragment-ktx:1.5.2'
-    dependencies.material = 'com.google.android.material:material:1.6.1'
+    dependencies.material = 'com.google.android.material:material:1.8.0-alpha01'
     dependencies.recyclerView = 'androidx.recyclerview:recyclerview:1.2.1'
     dependencies.lifecycleCommonJava8 = 'androidx.lifecycle:lifecycle-common-java8:2.5.1'
 
@@ -84,9 +96,11 @@ ext {
     /* Networking */
 
     dependencies.ktorAndroid = 'io.ktor:ktor-client-android:2.1.1'
-    dependencies.ktorClientSerialization = 'io.ktor:ktor-client-serialization:1.5.0'
-    dependencies.kotlinxSerialization =  'org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1'
-    dependencies.ktorLogging = 'io.ktor:ktor-client-logging-jvm:1.5.0'
+    dependencies.kotlinxSerialization =  'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0'
+    dependencies.ktorLogging = 'io.ktor:ktor-client-logging-jvm:2.1.1'
+    dependencies.ktorNegotiation = 'io.ktor:ktor-client-content-negotiation:2.1.1'
+    dependencies.ktorSerializationKotlinX = 'io.ktor:ktor-serialization-kotlinx-json:2.1.1'
+
 
     dependencies.leakCanary = 'com.squareup.leakcanary:leakcanary-android:2.9.1'
 
@@ -94,9 +108,11 @@ ext {
     dependencies.realm = 'io.realm.kotlin:library-base:1.0.2'
 
     /* Coroutines */
-    dependencies.coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
+    dependencies.coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
 
+    /* Firebase */
     dependencies.crashlytics = 'com.google.firebase:firebase-crashlytics-ktx:18.2.13'
+    dependencies.firebasePref = 'com.google.firebase:firebase-perf:20.1.1'
 
 
 }

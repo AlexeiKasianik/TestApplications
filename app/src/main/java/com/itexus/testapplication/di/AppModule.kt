@@ -1,7 +1,6 @@
 package com.itexus.testapplication.di
 
-import org.koin.dsl.module
+import com.itexus.testapplication.di.core.coreModule
+import com.itexus.testapplication.di.features.featuresModule
 
-val app = module {
-
-}
+val app = coreModule + featuresModule

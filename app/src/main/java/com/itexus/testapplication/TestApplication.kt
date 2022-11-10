@@ -6,6 +6,7 @@ import com.itexus.testapplication.app.BuildConfig
 import com.itexus.testapplication.di.app
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
+import io.realm.Realm
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -26,5 +27,6 @@ class TestApplication : Application() {
             FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
             Napier.base(DebugAntilog())
         }
+        Realm.init(this)
     }
 }

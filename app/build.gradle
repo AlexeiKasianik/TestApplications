@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'io.realm.kotlin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'com.google.firebase.firebase-perf'
@@ -65,21 +64,34 @@ dependencies {
     implementation rootProject.ext.dependencies.koinAndroid
     implementation rootProject.ext.dependencies.viewBinding
 
-    implementation rootProject.ext.dependencies.napier
-
-    implementation rootProject.ext.dependencies.coreKtx
-    implementation rootProject.ext.dependencies.activityKtx
-
-    implementation rootProject.ext.dependencies.lifecycleCommonJava8
-
     implementation rootProject.ext.dependencies.appcompat
     implementation rootProject.ext.dependencies.material
     implementation rootProject.ext.dependencies.constraintLayout
 
+    implementation rootProject.ext.dependencies.coreKtx
+    implementation rootProject.ext.dependencies.activityKtx
+    implementation rootProject.ext.dependencies.lifecycleCommonJava8
+
     implementation rootProject.ext.dependencies.coil
+
+    implementation rootProject.ext.dependencies.napier
+
+    implementation rootProject.ext.dependencies.cicerone
 
     implementation rootProject.ext.dependencies.realm
 
     implementation rootProject.ext.dependencies.crashlytics
+    implementation rootProject.ext.dependencies.firebasePref
+
+    implementation rootProject.ext.dependencies.ktorAndroid
+    implementation rootProject.ext.dependencies.kotlinxSerialization
+    implementation rootProject.ext.dependencies.ktorLogging
+    implementation rootProject.ext.dependencies.ktorNegotiation
+    implementation rootProject.ext.dependencies.ktorSerializationKotlinX
+
+    implementation rootProject.ext.dependencies.presentation
+    implementation rootProject.ext.dependencies.domain
+    implementation rootProject.ext.dependencies.data
+
 
 }
