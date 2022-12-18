@@ -31,10 +31,6 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8
     }
 
-    buildFeatures {
-        viewBinding true
-    }
-
     signingConfigs {
         debug {
             storePassword '123456789'

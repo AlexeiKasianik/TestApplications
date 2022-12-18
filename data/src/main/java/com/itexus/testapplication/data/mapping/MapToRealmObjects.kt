@@ -4,7 +4,7 @@ import com.itexus.testapplication.data.dataStorage.realmModels.*
 import com.itexus.testapplication.data.networkStorage.contracts.*
 import io.realm.RealmList
 
-internal fun Albums.toRealmAlbums() = AlbumsRealm()
+fun Albums.toRealmAlbums() = AlbumsRealm()
     .also {
         it.feed = feed.toRealmFeed()
     }

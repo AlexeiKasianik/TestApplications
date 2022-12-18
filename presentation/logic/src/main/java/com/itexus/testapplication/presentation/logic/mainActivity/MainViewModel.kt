@@ -10,7 +10,7 @@ class MainViewModel(
 ) : ViewModel() {
 
     init {
-        router.navigateTo(allAlbumsScreen)
+        router.replaceScreen(allAlbumsScreen)
     }
 
 }

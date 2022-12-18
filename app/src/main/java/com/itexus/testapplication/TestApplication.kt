@@ -7,6 +7,7 @@ import com.itexus.testapplication.di.app
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import io.realm.Realm
+import io.realm.RealmConfiguration
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -27,6 +28,18 @@ class TestApplication : Application() {
             FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
             Napier.base(DebugAntilog())
         }
+
+        initRealm()
+    }
+
+    private fun initRealm() {
         Realm.init(this)
+
+        val config = RealmConfiguration
+            .Builder()
+            .deleteRealmIfMigrationNeeded()
+            .allowWritesOnUiThread(true)
+            .build()
+        Realm.setDefaultConfiguration(config)
     }
 }
