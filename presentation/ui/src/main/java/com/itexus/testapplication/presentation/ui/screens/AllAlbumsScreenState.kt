@@ -1,0 +1,9 @@
+package com.itexus.testapplication.presentation.ui.screens
+
+import com.itexus.testapplication.presentation.ui.models.FeedUI
+
+data class AllAlbumsScreenState(
+    val allAlbums: FeedUI? = null,
+    val isLoaderVisible: Boolean = true,
+    val error: String? = null
+)

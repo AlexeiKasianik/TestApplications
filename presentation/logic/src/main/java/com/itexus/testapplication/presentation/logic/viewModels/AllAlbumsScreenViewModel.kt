@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.github.terrakok.cicerone.Router
 import com.itexus.testapplication.domain.storageRepository.StorageRepository
 import com.itexus.testapplication.presentation.logic.mapping.toPresentation
-import com.itexus.testapplication.presentation.ui.AlbumsUiState
+import com.itexus.testapplication.presentation.ui.screens.AllAlbumsScreenState
 import com.itexus.testapplication.presentation.ui.screens.BaseAllAlbumsScreenViewModel
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.*
@@ -15,24 +15,30 @@ class AllAlbumsScreenViewModel(
     private val storageRepository: StorageRepository
 ) : BaseAllAlbumsScreenViewModel() {
 
-    private val _albums = MutableStateFlow<AlbumsUiState>(AlbumsUiState.Loading)
-    override val albums: StateFlow<AlbumsUiState> = _albums
+    private val _state = MutableStateFlow(AllAlbumsScreenState())
+    override val state: StateFlow<AllAlbumsScreenState> = _state
+
 
     init {
+
+
         viewModelScope.launch {
-            storageRepository.getAlbums()
-                .map {
-                    Napier.e("skfjvnkldfjnskvdfjnv")
-                    it.toPresentation()
+
+            try {
+                _state.update { it.copy(isLoaderVisible = true) }
+
+                val albums = storageRepository.getAlbums()
+
+                _state.update {
+                    it.copy(
+                        allAlbums = albums.feed.toPresentation(),
+                        isLoaderVisible = false
+                    )
                 }
-                .onEach { _albums.value = AlbumsUiState.Loaded(it) }
-                .catch {
-                    Napier.e("skfjvnkldfjnskvdfjnv")
-                    Napier.e(it.toString())
-                    _albums.value = AlbumsUiState.Error(it.toString())
-                }/*
-                .flowOn(Dispatchers.IO)*/
-                .launchIn(this)
+            } catch (e: Exception) {
+                Napier.e(e.toString())
+                _state.update { it.copy(isLoaderVisible = false, error = e.toString()) }
+            }
         }
     }
 }

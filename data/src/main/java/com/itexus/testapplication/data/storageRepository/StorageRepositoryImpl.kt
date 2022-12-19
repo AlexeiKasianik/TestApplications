@@ -17,20 +17,20 @@ class StorageRepositoryImpl(
     private val networkApi: NetworkMusicApi
 ) : StorageRepository {
 
-    override suspend fun getAlbums(): Flow<AlbumsEntity> {
-        return flow { emit(networkApi.getAlbums()) }
-            .map {
+    override suspend fun getAlbums(): AlbumsEntity {
+        return try {
+            val networkAlbums = networkApi.getAlbums().also {
                 dbApi.saveAlbums(it.toRealmAlbums())
-                it
             }
-            .map(Albums::toDomain)
-            .catch { emit(it.handleError().first().toDomain()) }
+            networkAlbums.toDomain()
+        } catch (e: Exception) {
+            e.handleError()
+        }
     }
 
-    private suspend fun Throwable.handleError(): Flow<AlbumsRealm> {
-        return if (this is UnknownHostException) dbApi.getAlbums()
+    private suspend fun Exception.handleError(): AlbumsEntity {
+        return if (this is UnknownHostException) dbApi.getAlbums().toDomain()
         else throw LoadingDataException(123)
     }
 
-    /*сделать объет состояний success/failure (возможно вложенные sealed классы)*/
 }

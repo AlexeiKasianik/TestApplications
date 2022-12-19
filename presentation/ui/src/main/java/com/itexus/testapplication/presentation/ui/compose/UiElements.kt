@@ -22,10 +22,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
-import com.itexus.testapplication.presentation.ui.models.ResultUI
+import com.itexus.testapplication.presentation.ui.models.AlbumInfo
 
 @Composable
-fun AlbumCard(album: ResultUI) {
+fun AlbumCard(album: AlbumInfo) {
     Box(
         modifier = Modifier
             .fillMaxWidth(),
