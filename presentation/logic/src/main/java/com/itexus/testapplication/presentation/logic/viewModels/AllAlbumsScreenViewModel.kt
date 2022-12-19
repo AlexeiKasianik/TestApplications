@@ -18,8 +18,6 @@ class AllAlbumsScreenViewModel(
     private val _albums = MutableStateFlow<AlbumsUiState>(AlbumsUiState.Loading)
     override val albums: StateFlow<AlbumsUiState> = _albums
 
-    /*сделать стейты sealed interface Loading Failure Success*/
-
     init {
         viewModelScope.launch {
             storageRepository.getAlbums()

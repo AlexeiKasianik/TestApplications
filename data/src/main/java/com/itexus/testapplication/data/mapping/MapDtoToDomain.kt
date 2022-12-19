@@ -1,4 +1,4 @@
-package com.itexus.testapplication.domain.mapping
+package com.itexus.testapplication.data.mapping
 
 import com.itexus.testapplication.data.networkStorage.contracts.Albums
 import com.itexus.testapplication.data.networkStorage.contracts.Author

@@ -48,6 +48,9 @@ android {
 
 dependencies {
 
+    implementation project(':domain')
+
+
     implementation rootProject.ext.dependencies.ktorAndroid
     implementation rootProject.ext.dependencies.kotlinxSerialization
     implementation rootProject.ext.dependencies.ktorLogging

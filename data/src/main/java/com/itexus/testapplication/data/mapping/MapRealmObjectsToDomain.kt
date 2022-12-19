@@ -1,4 +1,4 @@
-package com.itexus.testapplication.domain.mapping
+package com.itexus.testapplication.data.mapping
 
 import com.itexus.testapplication.data.dataStorage.realmModels.*
 import com.itexus.testapplication.domain.models.*
