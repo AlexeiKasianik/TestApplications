@@ -111,5 +111,5 @@ ext {
     dependencies.crashlytics = 'com.google.firebase:firebase-crashlytics-ktx:18.2.13'
     dependencies.firebasePref = 'com.google.firebase:firebase-perf:20.1.1'
 
-
+    dependencies.composeUi = 'androidx.compose.ui:ui:1.3.2'
 }

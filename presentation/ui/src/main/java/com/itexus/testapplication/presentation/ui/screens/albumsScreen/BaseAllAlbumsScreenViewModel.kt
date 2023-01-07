@@ -1,4 +1,4 @@
-package com.itexus.testapplication.presentation.ui.screens
+package com.itexus.testapplication.presentation.ui.screens.albumsScreen
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.StateFlow

@@ -1,4 +1,4 @@
-package com.itexus.testapplication.presentation.ui.screens
+package com.itexus.testapplication.presentation.ui.screens.albumsScreen
 
 import com.itexus.testapplication.presentation.ui.models.FeedUI
 

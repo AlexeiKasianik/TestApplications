@@ -2,7 +2,7 @@ package com.itexus.testapplication.presentation.logic.mapping
 
 import com.itexus.testapplication.domain.models.*
 import com.itexus.testapplication.presentation.ui.models.*
-import com.itexus.testapplication.presentation.ui.screens.AllAlbumsScreenState
+import com.itexus.testapplication.presentation.ui.screens.albumsScreen.AllAlbumsScreenState
 
 internal fun AlbumsEntity.toPresentation() = AllAlbumsScreenState(
     allAlbums = feed.toPresentation(),
