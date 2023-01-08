@@ -1,36 +1,40 @@
 package com.itexus.testapplication.data.dataStorage.apiImpl
 
+import android.content.Context
 import com.itexus.testapplication.data.dataStorage.DataMusicApi
-import com.itexus.testapplication.data.dataStorage.realmModels.AlbumsRealm
-import com.itexus.testapplication.data.mapping.toRealmAlbums
-import com.itexus.testapplication.data.networkStorage.contracts.Albums
-import io.realm.Realm
-import io.realm.RealmConfiguration
-import io.realm.RealmResults
-import io.realm.kotlin.where
+import com.itexus.testapplication.data.dataStorage.realmModels.*
+import io.realm.kotlin.Configuration
+import io.realm.kotlin.Realm
+import io.realm.kotlin.ext.query
+import io.realm.kotlin.RealmConfiguration
 
-class DataMusicApiImpl: DataMusicApi {
+class DataMusicApiImpl() : DataMusicApi {
 
-    private val realm: Realm = Realm.getDefaultInstance()
 
-    init {
-        val config = RealmConfiguration
-            .Builder()
+    private val realm: Realm = Realm.open(
+        RealmConfiguration.Builder(
+            setOf(
+                ResultRealm::class,
+                LinkRealm::class,
+                GenreRealm::class,
+                FeedRealm::class,
+                AuthorRealm::class,
+                AlbumsRealm::class,
+            )
+        )
             .deleteRealmIfMigrationNeeded()
-            .allowWritesOnUiThread(true)
             .build()
-        Realm.setDefaultConfiguration(config)
+    )
+
+
+    override suspend fun getAlbums(): AlbumsRealm {
+        //todo need create exception
+        return realm.query<AlbumsRealm>().first().find() ?: throw RuntimeException("Empty database")
     }
 
-    override suspend fun getAlbums(): RealmResults<AlbumsRealm>? {
-        return realm.where<AlbumsRealm>().findAll()
-    }
-
-    override suspend fun saveAlbums(albums: Albums) {
-        realm.executeTransaction {
-            albums.toRealmAlbums().feed?.let {
-                realm.copyToRealmOrUpdate(it)
-            }
+    override suspend fun saveAlbums(albums: AlbumsRealm) {
+        realm.write {
+            copyToRealm(albums)
         }
     }
 

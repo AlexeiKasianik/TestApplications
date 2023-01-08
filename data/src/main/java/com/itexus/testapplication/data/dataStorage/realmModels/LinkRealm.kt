@@ -1,7 +1,7 @@
 package com.itexus.testapplication.data.dataStorage.realmModels
 
-import io.realm.RealmObject
+import io.realm.kotlin.types.RealmObject
 
-open class LinkRealm : RealmObject() {
+class LinkRealm : RealmObject {
     var self: String = ""
 }
