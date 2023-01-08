@@ -2,9 +2,11 @@ package com.itexus.testapplication.data.mapping
 
 import com.itexus.testapplication.data.dataStorage.realmModels.*
 import com.itexus.testapplication.data.networkStorage.contracts.*
-import io.realm.RealmList
+import io.realm.kotlin.ext.realmListOf
+import io.realm.kotlin.types.RealmList
+import java.util.Collections.addAll
 
-internal fun Albums.toRealmAlbums() = AlbumsRealm()
+fun Albums.toRealmAlbums() = AlbumsRealm()
     .also {
         it.feed = feed.toRealmFeed()
     }
@@ -18,13 +20,13 @@ internal fun Feed.toRealmFeed() = FeedRealm().also {
     it.country = country
     it.title = title
     it.updated = updated
-    it.links = RealmList<LinkRealm>().apply {
+    it.links = realmListOf<LinkRealm>().apply {
         addAll(
             links.map {
                 it.toRealmLink()
             })
     }
-    it.results = RealmList<ResultRealm>().apply {
+    it.results = realmListOf<ResultRealm>().apply {
         addAll(
             results.map {
                 it.toRealmResult()
@@ -48,7 +50,7 @@ internal fun Result.toRealmResult() = ResultRealm().also {
     it.artistUrl = artistUrl
     it.artworkUrl = artworkUrl
     it.contentAdvisoryRating = contentAdvisoryRating
-    it.genres = RealmList<GenreRealm>().apply {
+    it.genres = realmListOf<GenreRealm>().apply {
         addAll(genres.map {
             it.toRealmGenre()
         })

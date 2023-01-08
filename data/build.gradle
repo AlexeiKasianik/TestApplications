@@ -2,7 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'realm-android'
+    id 'io.realm.kotlin'
 }
 
 android {
@@ -47,6 +47,9 @@ android {
 }
 
 dependencies {
+
+    implementation project(':domain')
+
 
     implementation rootProject.ext.dependencies.ktorAndroid
     implementation rootProject.ext.dependencies.kotlinxSerialization

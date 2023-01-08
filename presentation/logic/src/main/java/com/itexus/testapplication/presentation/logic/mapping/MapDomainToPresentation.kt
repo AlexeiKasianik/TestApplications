@@ -1,8 +1,19 @@
 package com.itexus.testapplication.presentation.logic.mapping
 
-import com.itexus.testapplication.domain.models.AllAlbums
-import com.itexus.testapplication.presentation.ui.models.AlbumsUiModel
+import com.itexus.testapplication.domain.models.*
+import com.itexus.testapplication.presentation.ui.models.*
+import com.itexus.testapplication.presentation.ui.screens.albumsScreen.AllAlbumsScreenState
 
-fun List<AllAlbums>.toPresentation() = map {
-    AlbumsUiModel(albumUrl = it.albumImageUrl)
-}
+internal fun AlbumsEntity.toPresentation() = AllAlbumsScreenState(
+    allAlbums = feed.toPresentation(),
+)
+
+internal fun FeedEntity.toPresentation() = FeedUI(
+    results = results.map { it.toPresentation() },
+)
+
+internal fun ResultEntity.toPresentation() = AlbumInfo(
+    artistName = artistName,
+    artworkUrl = artworkUrl,
+    name = name,
+)

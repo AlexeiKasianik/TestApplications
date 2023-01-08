@@ -1,18 +1,17 @@
 package com.itexus.testapplication.data.dataStorage.realmModels
 
-import io.realm.RealmList
-import io.realm.RealmObject
-import io.realm.annotations.PrimaryKey
+import io.realm.kotlin.ext.realmListOf
+import io.realm.kotlin.types.RealmList
+import io.realm.kotlin.types.RealmObject
 
-open class FeedRealm : RealmObject() {
-    @PrimaryKey
+class FeedRealm : RealmObject {
     var id: String = ""
     var author: AuthorRealm? = AuthorRealm()
     var copyright: String = ""
     var country: String = ""
     var icon: String = ""
-    var links: RealmList<LinkRealm> = RealmList()
-    var results: RealmList<ResultRealm> = RealmList()
+    var links: RealmList<LinkRealm> = realmListOf()
+    var results: RealmList<ResultRealm> = realmListOf()
     var title: String = ""
     var updated: String = ""
 }

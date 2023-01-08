@@ -1,7 +1,7 @@
 package com.itexus.testapplication.presentation.logic.navigation
 
 import com.github.terrakok.cicerone.androidx.FragmentScreen
-import com.itexus.testapplication.presentation.ui.screens.AllAlbumsScreen
+import com.itexus.testapplication.presentation.ui.screens.albumsScreen.AllAlbumsScreen
 
 object Screens {
 

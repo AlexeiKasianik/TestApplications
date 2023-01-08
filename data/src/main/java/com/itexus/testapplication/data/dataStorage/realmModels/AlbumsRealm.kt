@@ -1,9 +1,7 @@
 package com.itexus.testapplication.data.dataStorage.realmModels
 
-import io.realm.RealmObject
-import io.realm.annotations.PrimaryKey
-import io.realm.kotlin.types.ObjectId
+import io.realm.kotlin.types.RealmObject
 
-open class AlbumsRealm : RealmObject() {
+class AlbumsRealm : RealmObject {
     var feed: FeedRealm? = FeedRealm()
 }
