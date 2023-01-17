@@ -1,3 +1,4 @@
 package com.itexus.testapplication.domain.exceptions
 
-class LoadingDataException(val messageRes: Int) : RuntimeException()
+class LoadingDataException : RuntimeException()
+class EmptyDBException : RuntimeException()

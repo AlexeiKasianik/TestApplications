@@ -1,8 +1,8 @@
 package com.itexus.testapplication.presentation.ui.compose
 
-import android.graphics.Bitmap
-import android.util.LruCache
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,25 +17,21 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color.Companion.Black
-import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
@@ -55,23 +51,27 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.itexus.testapplication.presentation.ui.R
-import com.itexus.testapplication.presentation.ui.models.AlbumInfo
-import com.itexus.testapplication.presentation.ui.models.FeedUI
+import com.itexus.testapplication.presentation.ui.models.alAlbumsScreen.AlbumInfo
+import com.itexus.testapplication.presentation.ui.models.alAlbumsScreen.FeedUI
 import com.itexus.testapplication.presentation.ui.screens.albumsScreen.BaseAllAlbumsScreenViewModel
-import dev.jakhongirmadaminov.glassmorphiccomposables.fastblur
-import dev.shreyaspatil.capturable.Capturable
-import dev.shreyaspatil.capturable.controller.rememberCaptureController
+import com.itexus.testapplications.uiKit.toImproveSmallPictureQuality
 
 @Composable
-fun AlbumCard(album: AlbumInfo) {
+fun AlbumCard(album: AlbumInfo, onItemClick: (String) -> Unit) {
     Box(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable(
+                indication = rememberRipple(
+                    color = grayColor
+                ),
+                interactionSource = MutableInteractionSource()
+            ) { onItemClick(album.id) },
         contentAlignment = Alignment.BottomStart
     ) {
         SubcomposeAsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(album.artworkUrl)
+                .data(album.artworkUrl.toImproveSmallPictureQuality())
                 .crossfade(500)
                 .placeholder(R.drawable.placeholder)
                 .build(),
@@ -82,7 +82,6 @@ fun AlbumCard(album: AlbumInfo) {
                 .clip(RoundedCornerShape(24.dp))
         )
 
-        // Костыль из-за которого нужно будет клик вешать на 2 объекта
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -90,8 +89,8 @@ fun AlbumCard(album: AlbumInfo) {
                 .clip(RoundedCornerShape(24.dp))
                 .background(
                     Brush.verticalGradient(
-                        0.5F to Black.copy(alpha = 0f),
-                        1F to Black.copy(alpha = 0.75f)
+                        0.5F to black.copy(alpha = 0f),
+                        1F to black.copy(alpha = 0.75f)
                     )
                 )
         )
@@ -100,7 +99,7 @@ fun AlbumCard(album: AlbumInfo) {
             Text(
                 text = album.name,
                 fontSize = 20.sp,
-                color = White,
+                color = white,
                 maxLines = 2,
                 letterSpacing = (-0.04).sp,
                 style = TextStyle(fontFamily = FontFamily(Font(R.font.inter_semi_bold))),
@@ -123,72 +122,59 @@ fun AlbumCard(album: AlbumInfo) {
 @Composable
 internal fun AlbumsScreen(
     viewModel: BaseAllAlbumsScreenViewModel,
-    modifier: Modifier,
-    snackbarHostState: SnackbarHostState,
 ) {
 
     val screenState = viewModel.state.collectAsState().value
     val lazyListState = rememberLazyGridState()
 
     Surface(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize(),
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
 
-            lateinit var memoryCache: LruCache<String, Bitmap>
-            val maxMemory = (Runtime.getRuntime().maxMemory() / 1024).toInt()
-
-            val cacheSize = maxMemory / 8
-
-            memoryCache = object : LruCache<String, Bitmap>(cacheSize) {
-
-                override fun sizeOf(key: String, bitmap: Bitmap): Int {
-                    // The cache size will be measured in kilobytes rather than
-                    // number of items.
-                    return bitmap.byteCount / 1024
-                }
-            }
-
-
-
-
-            var capturedBitmap by remember { mutableStateOf<Bitmap?>(memoryCache["BLURRED_BG_KEY"]) }
-            val captureController = rememberCaptureController()
-
-            Capturable(controller = captureController, onCaptured = { bitmap, _ ->
-                // This is captured bitmap of a content inside Capturable Composable.
-                bitmap?.let {
-                    fastblur(it.asAndroidBitmap(), 1f, 50)?.let { fastBlurred ->
-                        // Bitmap is captured successfully. Do something with it!
-                        memoryCache.put("BLURRED_BG_KEY", fastBlurred)
-                        capturedBitmap = fastBlurred
-                    }
-                }
-            }) {
-
-
-
-                if (capturedBitmap == null) captureController.capture()
-
-
-
-
-            }
-
             if (screenState.isLoaderVisible) Loader()
 
             if (screenState.allAlbums != null) {
-                AlbumLazyGrid(lazyListState, screenState.allAlbums)
+                AlbumLazyGrid(
+                    lazyListState,
+                    screenState.allAlbums,
+                    onItemClick = viewModel::albumClick
+                )
                 CollapsingTopBar(lazyListState = lazyListState)
             }
 
             if (screenState.error != null) {
-                LaunchedEffect(key1 = Unit, block = {
-                    snackbarHostState.showSnackbar(screenState.error)
-                })
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = stringResource(id = screenState.error),
+                        fontSize = 16.sp,
+                        color = grayColor,
+                        maxLines = 2,
+                        letterSpacing = (-0.04).sp,
+                        style = TextStyle(fontFamily = FontFamily(Font(R.font.inter_medium))),
+                    )
+
+                    ButtonWithColor(modifier = Modifier.padding(8.dp),
+                        onClick = { viewModel.reloadData() })
+                }
             }
         }
+    }
+}
+
+@Composable
+fun ButtonWithColor(modifier: Modifier, onClick: () -> Unit) {
+    Button(
+        modifier = modifier,
+        onClick = { onClick() },
+        colors = ButtonDefaults.buttonColors(backgroundColor = darkGray)
+    ) {
+        Text(text = stringResource(id = R.string.reload_albums_action), color = white)
     }
 }
 
@@ -248,24 +234,24 @@ private fun CollapsingTopBar(
             modifier = Modifier
                 .fillMaxSize()
                 .alpha(0.9f)
-                .background(color = White)
+                .background(color = white)
         )
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 24.dp)
         ) {
             MeasureUnconstrainedViewWidth(
                 viewToMeasure = {
-                    // Calculating the end text size so we can animate it properly
                     Text(
+                        letterSpacing = (-1).sp,
+                        style = TextStyle(fontFamily = FontFamily(Font(R.font.inter_bold))),
                         text = stringResource(id = topBarLabel),
                         fontSize = topBarTextSize
                     )
                 }
             ) { measuredEndWidth, measuredEndHeight ->
-                // Our text view that we are animating based on the returned measured "end" values
                 Text(
                     modifier = Modifier.layout { measurable, constraints ->
                         val placeable = measurable.measure(constraints)
@@ -277,13 +263,15 @@ private fun CollapsingTopBar(
                             val xOffset =
                                 calculateCurrentSize(xOffsetEnd.toFloat(), 0f, fraction)
 
-                            val yOffset = (topBarHeightPx / 2) - (placeable.height / 2)
+                            val yOffset = topBarHeightPx - placeable.height - 16.dp.toPx()
                             placeable.placeRelative(xOffset.toInt(), yOffset.toInt())
                         }
                     },
+                    style = TextStyle(fontFamily = FontFamily(Font(R.font.inter_bold))),
                     text = stringResource(id = topBarLabel),
+                    letterSpacing = (-1).sp,
                     fontSize = topBarTextSize,
-                    color = Black
+                    color = black
                 )
             }
         }
@@ -293,7 +281,8 @@ private fun CollapsingTopBar(
 @Composable
 private fun AlbumLazyGrid(
     lazyListState: LazyGridState,
-    allAlbums: FeedUI
+    allAlbums: FeedUI,
+    onItemClick: (String) -> Unit
 ) {
     LazyVerticalGrid(
         state = lazyListState,
@@ -309,7 +298,7 @@ private fun AlbumLazyGrid(
     ) {
         allAlbums.results.forEach {
             item {
-                AlbumCard(it)
+                AlbumCard(it, onItemClick = { onItemClick(it) })
             }
         }
     }
@@ -321,10 +310,10 @@ fun Loader() {
     Dialog(onDismissRequest = { }) {
         Surface(
             shape = RoundedCornerShape(16.dp),
-            color = White
+            color = white
         ) {
             Box(modifier = Modifier.size(256.dp), contentAlignment = Alignment.Center) {
-                LottieAnimation(composition)
+                LottieAnimation(composition, iterations = Int.MAX_VALUE)
             }
         }
     }

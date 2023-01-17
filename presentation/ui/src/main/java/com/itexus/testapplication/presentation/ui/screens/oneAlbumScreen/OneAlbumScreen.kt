@@ -1,4 +1,4 @@
-package com.itexus.testapplication.presentation.ui.screens.albumsScreen
+package com.itexus.testapplication.presentation.ui.screens.oneAlbumScreen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,12 +8,14 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
-import com.itexus.testapplication.presentation.ui.compose.AlbumsScreen
+import com.itexus.testapplication.presentation.ui.compose.OneAlbumScreen
+import com.itexus.testapplication.presentation.ui.compose.TransparentSystemBars
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
-class AllAlbumsScreen : Fragment() {
+class OneAlbumScreen : Fragment() {
 
-    private val viewModel by viewModel<BaseAllAlbumsScreenViewModel>()
+    private val viewModel by viewModel<BaseOneAlbumScreenViewModel> { parametersOf(arguments) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -27,8 +29,10 @@ class AllAlbumsScreen : Fragment() {
                         false
                     )
                 }
-                AlbumsScreen(viewModel)
+                TransparentSystemBars()
+                OneAlbumScreen(viewModel = viewModel)
             }
         }
     }
+
 }

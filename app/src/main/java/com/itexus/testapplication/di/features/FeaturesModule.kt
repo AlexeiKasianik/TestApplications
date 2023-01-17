@@ -2,7 +2,7 @@ package com.itexus.testapplication.di.features
 
 import com.itexus.testapplication.di.features.mainActivity.activityModule
 import com.itexus.testapplication.di.features.musicFeature.dataModule
-import com.itexus.testapplication.di.features.musicFeature.domainModule
 import com.itexus.testapplication.di.features.musicFeature.presentationModule
+import com.itexus.testapplication.di.features.musicFeature.useCases
 
-val featuresModule = dataModule + domainModule + presentationModule + activityModule
+val featuresModule = dataModule + useCases + presentationModule + activityModule
