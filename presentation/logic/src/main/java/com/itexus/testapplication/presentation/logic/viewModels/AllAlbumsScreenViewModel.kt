@@ -2,7 +2,7 @@ package com.itexus.testapplication.presentation.logic.viewModels
 
 import androidx.lifecycle.viewModelScope
 import com.github.terrakok.cicerone.Router
-import com.itexus.testapplication.data.useCases.GetAlbumsUseCase
+import com.itexus.testapplication.domain.useCases.GetAlbumsUseCase
 import com.itexus.testapplication.presentation.logic.mapping.toPresentation
 import com.itexus.testapplication.presentation.logic.navigation.Screens.buildOneAlbumScreen
 import com.itexus.testapplication.presentation.ui.R

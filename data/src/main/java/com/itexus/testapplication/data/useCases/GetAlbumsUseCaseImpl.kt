@@ -6,15 +6,16 @@ import com.itexus.testapplication.data.mapping.toRealmAlbums
 import com.itexus.testapplication.data.networkStorage.NetworkMusicApi
 import com.itexus.testapplication.domain.exceptions.LoadingDataException
 import com.itexus.testapplication.domain.models.AlbumsEntity
+import com.itexus.testapplication.domain.useCases.GetAlbumsUseCase
 import io.github.aakira.napier.Napier
 import java.net.UnknownHostException
 
-class GetAlbumsUseCase(
+class GetAlbumsUseCaseImpl(
     private val dbApi: DataMusicApi,
     private val networkApi: NetworkMusicApi
-) {
+) : GetAlbumsUseCase {
 
-    suspend operator fun invoke(): AlbumsEntity {
+    override suspend operator fun invoke(): AlbumsEntity {
         return try {
             val networkAlbums = networkApi.getAlbums().also {
                 dbApi.saveAlbums(it.toRealmAlbums())
